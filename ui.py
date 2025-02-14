@@ -1,5 +1,5 @@
 from service import (
-    logout, login, register, todo_add
+    logout, login, register, todo_add, set_admin
 )
 
 
@@ -27,12 +27,21 @@ def create_todo():
     response = todo_add(title)
     print(response.message)
 
+def set_admin_user():
+    username = input("Enter your username: ")
+    response = set_admin(username)
+    print(response.message)
+
+
+
+
 
 def menu():
     print('Login       => 1')
     print('Register    => 2')
     print('Logout      => 3')
     print('Todo Create => 4')
+    print('Set admin   => 5 ')
     print('Exit        => q')
     return input('Enter your choice: ')
 
@@ -48,6 +57,8 @@ def run():
             logout_page()
         elif choice == '4':
             create_todo()
+        elif choice == '5':
+            set_admin_user()
         elif choice == 'q':
             return
         else:

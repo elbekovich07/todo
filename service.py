@@ -1,3 +1,6 @@
+from nltk.downloader import update
+from sqlalchemy.sql.functions import user
+
 from migration.db import cur, commit
 from Session import Session
 from utils import Response, match_password, hash_password
@@ -66,6 +69,21 @@ def todo_add(title: str):
     return Response(message='Todo added', status_code=201)
 
 
-def set_admin():
-    pass
+@commit
+@login_required
+def set_admin(username: str):
+    user: User = Session.check_session()
+    if not user or user.role != 'admin':
+        return Response(message='Only admins can assign admin roles', status_code=403)
 
+    get_user_query = '''SELECT * FROM users WHERE username = %s;'''
+    cur.execute(get_user_query, (username,))
+    user_data = cur.fetchone()
+
+    if user_data is None:
+        return Response(message='User not found', status_code=404)
+
+    update_role_query = '''UPDATE users SET role = 'admin' WHERE username = %s;'''
+    cur.execute(update_role_query, (username,))
+
+    return Response(message=f'{username} is now an admin', status_code=200)
