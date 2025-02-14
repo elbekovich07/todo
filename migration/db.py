@@ -1,3 +1,5 @@
+import functools
+
 import psycopg2
 
 from utils import hash_password
@@ -16,6 +18,7 @@ cur = conn.cursor()
 
 
 def commit(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         conn.commit()

@@ -2,17 +2,19 @@ from Session import Session
 from migration.db import cur, commit
 from models import User, Todo
 from utils import Response, match_password
+from functools import wraps
+
 
 Session = Session()
 
 
 def login_required(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        if not Session.session:
-            raise Exception('User not authenticated')
-        result = func(*args, **kwargs)
-        return result
-
+        user = Session.check_session()
+        if not user:
+            return Response(message="User not authenticated", status_code=401)
+        return func(*args, **kwargs)
     return wrapper
 
 

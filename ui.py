@@ -35,14 +35,6 @@ def set_admin_user():
     print(response.message)
 
 
-def create_todo_page():
-    title = input("Enter task title: ")
-    description = input("Enter description (optional): ")
-    todo_type = input("Enter priority (low, medium, high): ")
-
-    response = create_todo(title, description, todo_type)
-    print(response.message)
-
 
 def view_todos_page():
     response = get_todos()
@@ -99,7 +91,7 @@ def run():
         elif choice == '3':
             logout_page()
         elif choice == '4':
-            create_todo_page()
+            create_todo()
         elif choice == '5':
             view_todos_page()
         elif choice == '6':

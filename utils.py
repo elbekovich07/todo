@@ -16,6 +16,7 @@ def match_password(raw_password: str, encoded_password: str) -> bool:
 
 
 class Response:
-    def __init__(self, message: str, status_code: int = 200) -> None:
+    def __init__(self, message: str, status_code: int, data=None):
         self.message = message
         self.status_code = status_code
+        self.data = data
